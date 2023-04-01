@@ -6,14 +6,24 @@ const formData = {};
 form.addEventListener('submit', submitForm)
 form.addEventListener('input', throttle(userInputData, 500))
 
+anotherSession();
 
 function submitForm(evt) {
   evt.preventDefault();
   localStorage.removeItem('feedback-form-state');
   evt.currentTarget.reset();
-}
+};
 
 function userInputData(evt) {
   formData[evt.target.name] = evt.target.value;
-  localStorage.setItem('feedback-form-state', JSON.stringify(formData));
-}
+  const storageData = JSON.parse(localStorage.getItem('feedback-form-state')) || {};
+  localStorage.setItem('feedback-form-state', JSON.stringify({...storageData, ...formData}));
+};
+
+function anotherSession() {
+  const storageData = JSON.parse(localStorage.getItem('feedback-form-state'));
+  if (storageData) {
+    form.querySelector('[name="email"]').value = storageData.email ?? '';
+    form.querySelector('[name="message"]').value = storageData.message ?? '';
+  }
+};
