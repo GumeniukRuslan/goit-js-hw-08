@@ -10,6 +10,12 @@ anotherSession();
 
 function submitForm(evt) {
   evt.preventDefault();
+  const storageData = JSON.parse(localStorage.getItem('feedback-form-state'))
+  if (storageData.email && storageData.message) {
+    console.log(storageData)
+  } else {
+    return alert('Всі поля повинні бути заповнені!')
+  }
   localStorage.removeItem('feedback-form-state');
   evt.currentTarget.reset();
 };
